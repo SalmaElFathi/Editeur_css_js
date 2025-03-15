@@ -1,10 +1,11 @@
-html=document.querySelector('.html');
-css=document.querySelector('.css');
-js=document.querySelector('.js');
-output=document.querySelector('.output').querySelector('iframe');
+let html = document.querySelector('.html');
+let css = document.querySelector('.css');
+let js = document.querySelector('.js');
+let output = document.querySelector('.output').querySelector('iframe');
 let codeHtml;
 let style;
 let script;
+
 const updateCode = () => {
     style = `<style>${css.value}</style>`;
     codeHtml = `<!DOCTYPE html>
@@ -23,15 +24,13 @@ const updateCode = () => {
     iframeDoc.write(codeHtml);
     iframeDoc.close();
 
-    const scriptTag = iframeDoc.createElement("script");
-    scriptTag.textContent = js.value;
-    iframeDoc.body.appendChild(scriptTag);
-
-
-
+    iframeDoc.addEventListener('DOMContentLoaded', () => {
+        const scriptTag = iframeDoc.createElement("script");
+        scriptTag.textContent = js.value;
+        iframeDoc.body.appendChild(scriptTag);
+    });
 };
 
-html.addEventListener('input',updateCode);
-css.addEventListener('input',updateCode);
-js.addEventListener('input',updateCode);
-
+html.addEventListener('input', updateCode);
+css.addEventListener('input', updateCode);
+js.addEventListener('input', updateCode);
