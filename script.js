@@ -1,32 +1,42 @@
 let html = document.querySelector('.html');
 let css = document.querySelector('.css');
 let js = document.querySelector('.js');
-let output = document.querySelector('.output').querySelector('iframe');
-let codeHtml;
-let style;
-let script;
+let output = document.querySelector('.output iframe');
+let timeout = null;
 
 const updateCode = () => {
-    style = `<style>${css.value}</style>`;
-    codeHtml = `<!DOCTYPE html>
+    clearTimeout(timeout); 
+    timeout = setTimeout(() => {
+        let style = `<style>${css.value}</style>`;
+        let script = `<script>
+            try {
+                ${js.value}
+            
+            
+                } catch (e) {
+                console.error(e);
+            }
+        <\/script>`;
+
+        let codeHtml = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Live Editor</title>
     ${style}
 </head>
-<body>${html.value}</body>
+<body>
+    ${html.value}
+    ${script}  
+</body>
 </html>`;
 
-    const iframeDoc = output.contentDocument || output.contentWindow.document;
-    iframeDoc.open();
-    iframeDoc.write(codeHtml);
-    iframeDoc.close();
-
-    const scriptTag = iframeDoc.createElement("script");
-    scriptTag.textContent = js.value;
-    iframeDoc.body.appendChild(scriptTag);  
+        let iframeDoc = output.contentDocument || output.contentWindow.document;
+        iframeDoc.open();
+        iframeDoc.write(codeHtml);
+        iframeDoc.close();
+    }, 500)
 };
 
 html.addEventListener('input', updateCode);
