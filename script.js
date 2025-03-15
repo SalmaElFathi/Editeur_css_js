@@ -24,11 +24,9 @@ const updateCode = () => {
     iframeDoc.write(codeHtml);
     iframeDoc.close();
 
-    iframeDoc.addEventListener('DOMContentLoaded', () => {
-        const scriptTag = iframeDoc.createElement("script");
-        scriptTag.textContent = js.value;
-        iframeDoc.body.appendChild(scriptTag);
-    });
+    const scriptTag = iframeDoc.createElement("script");
+    scriptTag.textContent = js.value;
+    iframeDoc.body.appendChild(scriptTag);  
 };
 
 html.addEventListener('input', updateCode);
